@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+
+  web:                                        # Web(Django)アプリケーション 用の設定
+    build:                                    # ビルド設定
+      context: ./web                          # ./web/Dockerfile を用いてビルドする
+    container_name: django.web
+    command: uwsgi --ini /code/config/config/uwsgi.ini
+    volumes:                                  # マウントフォルダの指定
+      - ./src:/code                           # アプリケーションのソースフォルダ
+      - ./static:/static                      # static ファイルフォルダ
+      - ./log/uwsgi/:/var/log/uwsgi           # uwsgi の設定ファイルをここから読み込ませる
+    expose:                                   # 開放するポート
+      - "8001"
+
+  nginx :                                     # nginx 用の設定
+    image: nginx:latest
+    container_name: nginx
+    ports:                                    # 8080 ポートを 80 ポートへ
+      - "8080:80"
+    volumes:                                  # マウントフォルダの指定
+      - ./nginx/conf:/etc/nginx/conf.d        # nginx 用の設定ファイルをここから読み込ませる
+      - ./nginx/uwsgi_params:/etc/nginx/uwsgi_params  # uwsgi のパラメータファイルをここから読ませる
+      - ./static:/static                      # static ファイルフォルダ
+      - ./log/nginx/:/var/log/nginx           # ログファイルをここへ保存する（永続化）
+    depends_on:
+      - web                                   # web コンテナの後から起動させる

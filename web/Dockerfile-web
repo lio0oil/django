@@ -1,0 +1,23 @@
+FROM python:3.8
+
+# nginx, suprevisor, uwsgi のインストール（gcc,build-base,linux-headersはuwsgiインストール時に使うためインストールする）
+RUN apt update && apt install -y --no-install-recommends \
+    python3-pip --upgrade pip
+
+# requirements.txt から Django などの必要なライブラリをインストール
+# 不要になった gcc などをアンインストール
+COPY ./web/requirements.txt /code/
+RUN pip3 install -r /code/requirements.txt && \
+    pip3 install uwsgi
+
+# ソースファイルを /code/ フォルダへコピーする
+COPY ./src/ /code/
+
+# 8001番ポートを開放する
+EXPOSE 8001
+# 作業用フォルダを /code/ にする
+WORKDIR /code/
+
+RUN mkdir /var/log/uwsgi/
+
+CMD ["uwsgi","--ini","/code/config/config/uwsgi.ini"]

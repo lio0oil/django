@@ -10,4 +10,6 @@
     "python.formatting.provider": "black",
     "editor.formatOnSave": true,
     "editor.formatOnPaste": false,
+    // 改行コードLF
+    "files.eol": "\n",
 }
