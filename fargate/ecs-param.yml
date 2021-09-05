@@ -1,22 +1,24 @@
 version: 1
 task_definition:
-  ecs_network_mode: awsvpc
   task_execution_role: ecsTaskExecutionRole
+  ecs_network_mode: awsvpc
   task_size:
-    cpu_limit: 512
-    mem_limit: 2GB
+    mem_limit: 512
+    cpu_limit: 256
   services:
     web:
       essential: true
-    service:
+    nginx:
       essential: true
-
+      depends_on:
+        - container_name: web
+          condition: START
 run_params:
   network_configuration:
     awsvpc_configuration:
       subnets:
-        - subnet-xxxxxxxx
-        - subnet-yyyyyyyy
+        - "subnet-0e4bf798ac27d92df"
+        - "subnet-0d4f3d16249bc155f"
       security_groups:
-        - sg-xxxxxxxx
-      assign_public_ip: ENABLED
+        - "my-sg-pri-01"
+      assign_public_ip: DISABLED
