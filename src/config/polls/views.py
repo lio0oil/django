@@ -6,8 +6,13 @@ from django.utils import timezone
 
 from .models import Choice, Question
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 class IndexView(generic.ListView):
+
     template_name = "polls/index.html"
     context_object_name = "latest_question_list"
 
@@ -15,6 +20,12 @@ class IndexView(generic.ListView):
         """
         Excludes any questions that aren't published yet.
         """
+        logger.critical("log critical test!")
+        logger.error("log error test!")
+        logger.warning("log warning test!")
+        logger.info("log info test!")
+        logger.debug("log debug test!")
+
         return Question.objects.filter(pub_date__lte=timezone.now())
 
 

@@ -5,7 +5,7 @@ services:
     build: # ビルド設定
       context: ./web # ./web/Dockerfile を用いてビルドする
     container_name: django.web
-    command: uwsgi --ini /code/config/config/uwsgi.ini
+    command: uwsgi --ini /code/config/config/uwsgi.ini:debug
     volumes: # マウントフォルダの指定
       - ./src:/code # アプリケーションのソースフォルダ
       - ./static:/static # static ファイルフォルダ

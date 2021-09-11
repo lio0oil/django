@@ -20,4 +20,5 @@ WORKDIR /code/
 
 RUN mkdir /var/log/uwsgi/
 
-CMD ["uwsgi","--ini","/code/config/config/uwsgi.ini"]
+ENTRYPOINT ["uwsgi"]
+CMD ["--ini","/code/config/config/uwsgi.ini"]

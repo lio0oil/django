@@ -127,6 +127,7 @@ STATIC_ROOT = os.path.join(BASE_DIR.parent.parent, "static")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+# djangoは内部処理全般、django.serverは開発用Webサーバのアクセスログ
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
@@ -141,34 +142,56 @@ LOGGING = {
     "formatters": {
         "django.server": {
             "()": "django.utils.log.ServerFormatter",
-            "format": "[%(server_time)s] %(message)s a",
-        }
+            "format": "[%(server_time)s] %(message)s",
+        },
+        "console": {
+            "()": "django.utils.log.ServerFormatter",
+            "format": "%(asctime)s [%(levelname)s] %(process)d %(thread)d %(pathname)s:%(lineno)d %(message)s",
+            "datefmt": "%d/%m/%Y %H:%M:%S",
+        },
+        "json": {
+            "()": "pythonjsonlogger.jsonlogger.JsonFormatter",
+            "format": "%(asctime)s [%(levelname)s] %(process)d %(thread)d %(pathname)s:%(lineno)d %(message)s",
+            "datefmt": "%d/%m/%Y %H:%M:%S",
+        },
     },
     "handlers": {
         "console": {
             "level": "INFO",
             "filters": ["require_debug_true"],
             "class": "logging.StreamHandler",
+            "formatter": "console",
         },
         "django.server": {
             "level": "INFO",
             "class": "logging.StreamHandler",
             "formatter": "django.server",
         },
-        "mail_admins": {
-            "level": "ERROR",
+        "myapp_release": {
+            "level": "WARNING",
             "filters": ["require_debug_false"],
-            "class": "django.utils.log.AdminEmailHandler",
+            "class": "logging.StreamHandler",
+            "formatter": "json",
+        },
+        "myapp_debug": {
+            "filters": ["require_debug_true"],
+            "class": "logging.StreamHandler",
+            "formatter": "json",
         },
     },
     "loggers": {
         "django": {
-            "handlers": ["console", "mail_admins"],
+            "handlers": ["console"],
             "level": "INFO",
         },
         "django.server": {
             "handlers": ["django.server"],
             "level": "INFO",
+            "propagate": False,
+        },
+        "": {
+            "handlers": ["myapp_release", "myapp_debug"],
+            "level": "DEBUG",
             "propagate": False,
         },
     },
