@@ -3,15 +3,13 @@ FROM python:3.8-slim
 RUN apt update && apt install -y --no-install-recommends \
     gcc \
     libc-dev \
-    python3-pip --upgrade pip
+    python3-pip --upgrade pip \
+    && apt-get clean
 
-# requirements.txt から Django などの必要なライブラリをインストール
-# 不要になった gcc などをアンインストール
 COPY ./web/requirements.txt /code/
-RUN pip3 install -r /code/requirements.txt && \
-    pip3 install uwsgi
+RUN pip3 install -r /code/requirements.txt \
+    && pip3 install uwsgi
 
-# ソースファイルを /code/ フォルダへコピーする
 COPY ./src/ /code/
 
 # 8001番ポートを開放する

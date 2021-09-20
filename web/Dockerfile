@@ -4,12 +4,13 @@ ENV PYTHONUNBUFFERED=1
 RUN apt update && apt install -y --no-install-recommends \
     gcc \
     libc-dev \
-    python3-pip --upgrade pip
+    python3-pip --upgrade pip \
+    && apt-get clean
 
 WORKDIR /code
 COPY requirements.txt /code/
-RUN pip install -r requirements.txt
-RUN pip install uwsgi
+RUN pip3 install -r /code/requirements.txt \
+    && pip3 install uwsgi
 
 EXPOSE 8001
 
