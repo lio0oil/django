@@ -5,7 +5,7 @@ RUN apt update && apt install -y --no-install-recommends \
     gcc \
     libc-dev \
     python3-pip --upgrade pip \
-    && apt-get clean
+    && apt clean
 
 WORKDIR /code
 COPY requirements.txt /code/
