@@ -40,6 +40,11 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "debug_toolbar",
+    "django.contrib.sites",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.amazon_cognito",
 ]
 
 MIDDLEWARE = [
@@ -51,6 +56,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "debug_toolbar.middleware.DebugToolbarMiddleware",
+    "global_login_required.GlobalLoginRequiredMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -199,7 +205,7 @@ LOGGING = {
     },
 }
 
-# Django Debug Toolbar
+# django-debug-toolbar
 INTERNAL_IPS = [
     "127.0.0.1",
 ]
@@ -208,3 +214,25 @@ if DEBUG:
     import mimetypes
 
     mimetypes.add_type("application/javascript", ".js", True)
+
+# django-allauth
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+]
+
+SITE_ID = 1
+
+SOCIALACCOUNT_PROVIDERS = {
+    "amazon_cognito": {
+        "DOMAIN": "https://djangoapp.auth.ap-northeast-1.amazoncognito.com",
+    }
+}
+
+LOGIN_REDIRECT_URL = "/polls/"
+ACCOUNT_LOGOUT_ON_GET = True
+
+# django-glrm
+PUBLIC_PATHS = [
+    "/accounts/*",
+]
