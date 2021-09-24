@@ -154,5 +154,5 @@ cython_debug/
 
 #Add Original
 log/
-static/
+/static/
 #End Original

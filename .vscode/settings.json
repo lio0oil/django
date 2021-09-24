@@ -1,15 +1,23 @@
 {
-    // リンタの設定
-    "python.linting.pylintEnabled": false,
-    "python.linting.flake8Enabled": true,
-    "python.linting.lintOnSave": true,
-    "python.linting.flake8Args": [
-        "--ignore=E203,E501,W503,W504"
-    ],
-    // フォーマッタの設定
-    "python.formatting.provider": "black",
-    "editor.formatOnSave": true,
-    "editor.formatOnPaste": false,
-    // 改行コードLF
-    "files.eol": "\n",
+  // リンタの設定
+  "python.linting.pylintEnabled": false,
+  "python.linting.flake8Enabled": true,
+  "python.linting.lintOnSave": true,
+  "python.linting.flake8Args": ["--ignore=E203,E501,W503,W504"],
+  // フォーマッタの設定
+  "python.formatting.provider": "black",
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": false,
+  // 改行コードLF
+  "files.eol": "\n",
+  "files.associations": {
+    "**/*.html": "html",
+    "**/templates/**/*.html": "django-html",
+    "**/templates/**/*": "django-txt",
+    "**/requirements{/**,*}.{txt,in}": "pip-requirements"
+  },
+  "emmet.includeLanguages": { "django-html": "html" },
+  "beautify.language": {
+    "html": ["htm", "html", "django-html"]
+  }
 }
