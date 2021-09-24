@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "debug_toolbar",
+    "social_django",
+    "social.apps.django_app.default",
 ]
 
 MIDDLEWARE = [
@@ -51,6 +53,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "debug_toolbar.middleware.DebugToolbarMiddleware",
+    "global_login_required.GlobalLoginRequiredMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -66,6 +69,8 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "social.apps.django_app.context_processors.backends",
+                "social.apps.django_app.context_processors.login_redirect",
             ],
         },
     },
@@ -208,3 +213,27 @@ if DEBUG:
     import mimetypes
 
     mimetypes.add_type("application/javascript", ".js", True)
+
+# django-glrm
+PUBLIC_PATHS = [
+    "/*",
+]
+
+# CognitoOAuth2
+AUTHENTICATION_BACKENDS = (
+    "social_core.backends.cognito.CognitoOAuth2",
+    "django.contrib.auth.backends.ModelBackend",
+)
+
+# @login_requiredで使用されるデフォルトのログインURLの差し替え
+LOGIN_URL = "/polls/login/"
+# ログイン完了後に使用されるデフォルトのリダイレクトURLの差し替え
+LOGIN_REDIRECT_URL = "/polls/index/"
+# ユーザープール→アプリクライアントにあるアプリクライアントID
+SOCIAL_AUTH_COGNITO_KEY = "xxxxxxxxxx"
+# ユーザープール→アプリクライアントにあるアプリクライアントシークレットID
+SOCIAL_AUTH_COGNITO_SECRET = "xxxxxxxxxx"
+# ユーザープール→ドメイン名で指定したドメインURL
+SOCIAL_AUTH_COGNITO_POOL_DOMAIN = (
+    "https://xxxxxxxxxx.auth.ap-northeast-1.amazoncognito.com"
+)

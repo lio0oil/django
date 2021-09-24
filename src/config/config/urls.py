@@ -20,6 +20,7 @@ from django.conf import settings
 urlpatterns = [
     path("polls/", include("polls.urls")),
     path("admin/", admin.site.urls),
+    path("social/", include("social_django.urls", namespace="social")),
 ]
 
 if settings.DEBUG:
